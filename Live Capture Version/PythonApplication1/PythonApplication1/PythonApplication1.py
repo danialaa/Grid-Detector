@@ -16,18 +16,14 @@ while True:
     ratio = img.shape[0] / float(img.shape[0])
     blur = cv2.GaussianBlur(grey, (5, 5), 0)
     thresh = cv2.adaptiveThreshold(blur, 255, 1, 1, 11, 2)
-    
     mask = np.zeros((grey.shape), np.uint8)
-
-    
-
 
     maxArea = 0
     c = 0
     pos = 0
 
-    contours, _ = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
+    contours, _ = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     for contour in contours:
         area = cv2.contourArea(contour)
     
@@ -36,21 +32,18 @@ while True:
                 maxArea = area
                 maxContour = contour
                 pos = c
-                img = cv2.drawContours(grey, contours, c, (0, 255, 0), 3)
-    
+                img = cv2.drawContours(img, contours, c, (0, 255, 0), 3)
         c += 1
 
-    #cv2.drawContours(mask, [maxContour], 0, 255, -1)
-    #cv2.drawContours(mask, [maxContour], 0, 0, 2)
+
     out = np.zeros_like(grey)
     out[mask == 255] = grey[mask == 255]
     blur = cv2.GaussianBlur(out, (5, 5), 0)
     thresh = cv2.adaptiveThreshold(blur, 255, 1, 1, 11, 2)
-        
     contours2, _ = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-        
-    c = 0
+    
 
+    c = 0
     for contour in contours2:
         area = cv2.contourArea(contour)
     
@@ -63,9 +56,6 @@ while True:
         c += 1
 
     cv2.imshow('Detector', img)
-    #cv2.imshow('Gray', grey)
-    #cv2.imshow('mask', mask)
-
 
 
 cam.release()
